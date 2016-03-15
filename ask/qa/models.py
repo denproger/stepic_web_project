@@ -2,6 +2,7 @@
 # coding: utf8
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 # Модель вопроса
 class Question(models.Model):
@@ -10,12 +11,17 @@ class Question(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)  # дата добавления вопроса
     rating = models.IntegerField(default=0)             # рейтинг вопроса (число)
     author = models.ForeignKey(User, related_name='+', on_delete=models.CASCADE )# автор вопроса
-    likes = models.ManyToManyField(User) # список пользователей, поставивших "лайк"
+    likes = models.ManyToManyField(User,null=True, blank=True,default=None) # список пользователей, поставивших "лайк"
 
     def __unicode__(self):
         return self.title
+
+    def shortText(self):
+        return self.text if len(self.text) < 100 else self.text[:300] + '...'
+
     def get_absolute_url(self):
         return '/question/%d/' % self.pk
+
     class Meta:
         ordering = ['-added_at']
 
@@ -30,3 +36,5 @@ class Answer(models.Model):
         ordering = ['-added_at']
 
 
+#from django import forms
+#from django.core.exceptions import ValidationError

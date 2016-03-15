@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content%}
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{ question.title }}</h4>
+            </div>
+            <div class="panel-body">
+                {{ question.text }}
+                <div class="list-group">
+                {% for answer in answers %}
+                    <div href="{{ question.get_absolute_url }}" class="list-group-item">
+    			        <h4 class="list-group-item-heading active">{{ answer.author }}</h4>
+                        <p class="list-group-item-text">{{ answer.text }}</p>
+			        </div>
+                 {% endfor %}
+		        </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
