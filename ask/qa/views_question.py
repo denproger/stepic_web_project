@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # coding: utf8
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from models import Question, Answer
 from django.views.decorators.http import require_GET
-
+from views_answer import add_answer
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
+from forms import AskForm, AnswerForm
 
 def paginate(request, qs, default_limit=10, max_limit=100 ):
     try:
@@ -47,17 +48,31 @@ def get_popular_questions(request):
          'paginator': paginator, 'page': page,
     })
 
-@require_GET
 def get_question(request, id):
     try:
         question = Question.objects.get(pk=id)
     except Question.DoesNotExist:
         raise Http404
     answers = Answer.objects.filter(question=question).order_by('-added_at')
+    if request.method == "POST":
+        add_answer(request)
+    else:
+        default_data = {'question': question.id}
+        form = AnswerForm(initial=default_data);
     return render(request, 'question.html', {
                   'question': question,
-                  'answers': answers
+                  'answers': answers,
+                  'form': form,
     })
 
-
+def ask(request):
+    if request.method == "POST":
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_absolute_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'ask.html', {'form': form })
 

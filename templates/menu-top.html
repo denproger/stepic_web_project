@@ -13,7 +13,7 @@
           <ul class="nav navbar-nav">
             <li {% block menu-top-main-active %}{% endblock%} ><a href="{% url 'main' %}">Новые</a></li>
             <li {% block menu-top-popular-active %}{% endblock%} ><a href="{% url 'popular' %}">Порулярные</a></li>
-            <li><a href="#contact">About</a></li>
+            <li {% block menu-top-ask-active %}{% endblock%}><a href="{% url 'ask' %}">Спросить</a></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->

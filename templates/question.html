@@ -7,6 +7,33 @@
             </div>
             <div class="panel-body">
                 {{ question.text }}
+            </div>
+            <div class="panel-footer">
+                {% for e in form.non_field_errors %}
+                    <div class="alert alert-danger">{{ e }}</div>
+                {% endfor %}
+                <form class="form-horizontal" method="post" action="/answer/">
+                    {% csrf_token %}
+                    <fieldset>
+                        {% for field in form %}
+                            <div class="control-group
+                                {% if field.errors %}has-error{% endif %}">
+                                <label class="control-label">{{ field.label }}</label>
+                                <div class="controls">{{ field }}</div>
+                            </div>
+                        {% endfor %}
+                    </fieldset>
+                    <div class="form-actions">
+                         <button type="submit" class="btn btn-primary">Ответить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Ответы</h4>
+            </div>
+            <div class="panel-budy">
                 <div class="list-group">
                 {% for answer in answers %}
                     <div href="{{ question.get_absolute_url }}" class="list-group-item">
