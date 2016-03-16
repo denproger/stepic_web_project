@@ -30,20 +30,21 @@ class AnswerForm(forms.Form):
     question = forms.IntegerField(widget = forms.HiddenInput()) # поле для связи с вопросом
 
     def clean(self):
-        text = self.cleaned_data.get('text')
+        self.m_question = 0;
+
         question = self.cleaned_data.get('question')
-        print 'text: "{}"'.format(text)
-        print 'question: "{}"'.format(question)
-        if text is None or len(text) == 0:
-            raise forms.ValidationError(u'Текст вопроса не указан')
-        print 'Question: "{}"'.format(question)
         if question is None or question == 0:
             raise forms.ValidationError(u'Вопрос не выбран')
         try:
             question = Question.objects.get(pk=question)
-            self.cleaned_data['question'] = int(question.id)
+            self.m_question = int(question.id)
+            self.cleaned_data['question'] = self.m_question
         except Question.DoesNotExist, ValueError:
             raise forms.ValidationError(u'Выбранного вопроса нет в базе')
+
+        text = self.cleaned_data.get('text')
+        if text is None or len(text) == 0:
+            raise forms.ValidationError(u'Текст вопроса не указан')
         return self.cleaned_data
 
     def save(self):

@@ -5,7 +5,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from models import Question, Answer
 from django.views.decorators.http import require_GET
-from views_answer import add_answer
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
 from forms import AskForm, AnswerForm
@@ -48,17 +47,22 @@ def get_popular_questions(request):
          'paginator': paginator, 'page': page,
     })
 
-def get_question(request, id):
+def question_details(request, id):
     try:
         question = Question.objects.get(pk=id)
     except Question.DoesNotExist:
         raise Http404
-    answers = Answer.objects.filter(question=question).order_by('-added_at')
     if request.method == "POST":
-        add_answer(request)
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save()
+            question = answer.question
+            url = question.get_absolute_url()
+            return HttpResponseRedirect(url)
     else:
         default_data = {'question': question.id}
         form = AnswerForm(initial=default_data);
+    answers = Answer.objects.filter(question=question).order_by('-added_at')
     return render(request, 'question.html', {
                   'question': question,
                   'answers': answers,

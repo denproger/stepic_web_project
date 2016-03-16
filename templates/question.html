@@ -15,13 +15,12 @@
                 <form class="form-horizontal" method="post" action="/answer/">
                     {% csrf_token %}
                     <fieldset>
-                        {% for field in form %}
-                            <div class="control-group
-                                {% if field.errors %}has-error{% endif %}">
-                                <label class="control-label">{{ field.label }}</label>
-                                <div class="controls">{{ field }}</div>
-                            </div>
-                        {% endfor %}
+                        <div class="control-group
+                            {% if form.text.errors %}has-error{% endif %}">
+                            <label class="control-label">{{ form.text.label }}</label>
+                            <div class="controls">{{ form.text }}</div>
+                        </div>
+                        {{ form.question }}
                     </fieldset>
                     <div class="form-actions">
                          <button type="submit" class="btn btn-primary">Ответить</button>
