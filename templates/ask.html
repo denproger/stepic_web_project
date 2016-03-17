@@ -4,7 +4,7 @@
 
         <div class="row row-offcanvas row-offcanvas-right">
 
-            {% if user.is_authenticated %}
+
                     {% for e in form.non_field_errors %}
                         <div class="alert alert-danger">{{ e }}</div>
                     {% endfor %}
@@ -32,6 +32,6 @@
                             </div>
                         </div>
                     </form>
-            {% endif %}
+
         </div>
 {% endblock %}

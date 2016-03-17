@@ -13,9 +13,7 @@
           <ul class="nav navbar-nav">
             <li {% block menu-top-main-active %}{% endblock%} ><a href="{% url 'main' %}">Новые</a></li>
             <li {% block menu-top-popular-active %}{% endblock%} ><a href="{% url 'popular' %}">Порулярные</a></li>
-            {% if user.is_authenticated %}
-                <li {% block menu-top-ask-active %}{% endblock%}><a href="{% url 'ask' %}">Спросить</a></li>
-            {% endif %}
+            <li {% block menu-top-ask-active %}{% endblock%}><a href="{% url 'ask' %}">Спросить</a></li>
             <li {% block menu-top-signup-action %}{%endblock%}><a href="{% url 'signup' %}">Регистрация</a></li>
             <li {% block menu-top-login-action %}{%endblock%}><a href="{% url 'login' %}">Войти</a></li>
             {% if user.is_authenticated %}

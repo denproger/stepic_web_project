@@ -48,15 +48,18 @@ def get_popular_questions(request):
          'paginator': paginator, 'page': page,
     })
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def question_details(request, id):
     try:
         question = Question.objects.get(pk=id)
     except Question.DoesNotExist:
         raise Http404
     if request.method == "POST":
+        user = request.user
+        if not user.is_authenticated():
+            return HttpResponseRedirect('/login/')
         form = AnswerForm(request.POST)
-        form.setUser(request.user)
+        form.setUser(user)
         if form.is_valid():
             answer = form.save()
             question = answer.question
@@ -72,11 +75,14 @@ def question_details(request, id):
                   'form': form,
     })
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def ask(request):
     if request.method == "POST":
+        user = request.user
+        if not user.is_authenticated():
+            return HttpResponseRedirect('/login/')
         form = AskForm(request.POST)
-        form.setUser(request.user)
+        form.setUser(user)
         if form.is_valid():
             question = form.save()
             url = question.get_absolute_url()
