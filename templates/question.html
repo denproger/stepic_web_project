@@ -9,23 +9,26 @@
                 {{ question.text }}
             </div>
             <div class="panel-footer">
-                {% for e in form.non_field_errors %}
-                    <div class="alert alert-danger">{{ e }}</div>
-                {% endfor %}
-                <form class="form-horizontal" method="post" action="/answer/">
-                    {% csrf_token %}
-                    <fieldset>
-                        <div class="control-group
-                            {% if form.text.errors %}has-error{% endif %}">
-                            <label class="control-label">{{ form.text.label }}</label>
-                            <div class="controls">{{ form.text }}</div>
+
+                {% if user.is_authenticated %}
+                    {% for e in form.non_field_errors %}
+                        <div class="alert alert-danger">{{ e }}</div>
+                    {% endfor %}
+                    <form class="form-horizontal" method="post" action="/answer/">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="control-group
+                                {% if form.text.errors %}has-error{% endif %}">
+                                <label class="control-label">{{ form.text.label }}</label>
+                                <div class="controls">{{ form.text }}</div>
+                            </div>
+                            {{ form.question }}
+                        </fieldset>
+                        <div class="form-actions">
+                             <button type="submit" class="btn btn-primary">Ответить</button>
                         </div>
-                        {{ form.question }}
-                    </fieldset>
-                    <div class="form-actions">
-                         <button type="submit" class="btn btn-primary">Ответить</button>
-                    </div>
-                </form>
+                    </form>
+                {% endif %}
             </div>
         </div>
         <div class="panel panel-default">

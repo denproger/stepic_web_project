@@ -8,6 +8,7 @@ from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator, EmptyPage
 from django.http import Http404
 from forms import AskForm, AnswerForm
+from django.contrib.auth.decorators import login_required
 
 def paginate(request, qs, default_limit=10, max_limit=100 ):
     try:
@@ -47,6 +48,7 @@ def get_popular_questions(request):
          'paginator': paginator, 'page': page,
     })
 
+@login_required(login_url='/login/')
 def question_details(request, id):
     try:
         question = Question.objects.get(pk=id)
@@ -54,6 +56,7 @@ def question_details(request, id):
         raise Http404
     if request.method == "POST":
         form = AnswerForm(request.POST)
+        form.setUser(request.user)
         if form.is_valid():
             answer = form.save()
             question = answer.question
@@ -69,9 +72,11 @@ def question_details(request, id):
                   'form': form,
     })
 
+@login_required(login_url='/login/')
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
+        form.setUser(request.user)
         if form.is_valid():
             question = form.save()
             url = question.get_absolute_url()

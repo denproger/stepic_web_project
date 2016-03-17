@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from qa.views import test
+from qa.views import test, signup_user, login_user, logout_user
 from qa.views_question import *
 from qa.views_answer import *
 from django.contrib import admin
@@ -13,8 +13,9 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', get_new_questions, name="main"),
-                       url(r'^login/', test),
-                       url(r'^signup/', test),
+                       url(r'^login/', login_user, name='login'),
+                       url(r'^logout/', logout_user, name='logout'),
+                       url(r'^signup/', signup_user, name="signup"),
                        url(r'^question/(\d+)/', question_details, name="question"),
                        url(r'^ask/', ask, name='ask'),
                        url(r'^popular/', get_popular_questions, name="popular"),

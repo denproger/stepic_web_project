@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block menu-top-ask-active %}class="active"{% endblock%}
+{% block menu-top-signup-active %}class="active"{% endblock%}
 {% block content%}
 
         <div class="row row-offcanvas row-offcanvas-right">
 
-            {% if user.is_authenticated %}
+
                     {% for e in form.non_field_errors %}
                         <div class="alert alert-danger">{{ e }}</div>
                     {% endfor %}
-                    <form class="form-horizontal" method="post" action="/ask/">
+                    <form class="form-horizontal" method="post" action="/signup/">
                         {% csrf_token %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h4 class="panel-title">Ваш вопрос</h4>
+                                <h4 class="panel-title">Регистрация пользователя</h4>
                             </div>
                             <div class="panel-body">
                                 <fieldset>
@@ -27,11 +27,10 @@
                             </div>
                             <div class="panel-footer">
                                 <div class="form-actions">
-                                     <button type="submit" class="btn btn-primary">Сохранить</button>
+                                     <button type="submit" class="btn btn-primary">Зарегистрировать</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-            {% endif %}
         </div>
 {% endblock %}
